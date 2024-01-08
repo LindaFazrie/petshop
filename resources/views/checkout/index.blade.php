@@ -1,0 +1,85 @@
+<!-- resources/views/checkout/index.blade.php -->
+
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <h1 style="color: #ff7eb9;">Checkout</h1>
+
+        <!-- Payment Section -->
+        <div class="card border border-pink mb-4">
+            <div class="card-header bg-pink text-white">
+                Payment Information
+            </div>
+            <div class="card-body">
+                <!-- Payment Options -->
+                <div class="row">
+    <div class="col-md-4 text-center">
+        <label>
+            <input type="radio" name="payment_method" value="credit_card">
+            <img src="{{ asset('storage/credit_icon.png') }}" alt="Credit Card" class="img-fluid" style="max-width: 50px;">
+            <p>Credit Card</p>
+        </label>
+    </div>
+    <div class="col-md-4 text-center">
+        <label>
+            <input type="radio" name="payment_method" value="bank_transfer">
+            <img src="{{ asset('storage/transfer_icon.png') }}" alt="Bank Transfer" class="img-fluid" style="max-width: 50px;">
+            <p>Bank Transfer</p>
+        </label>
+    </div>
+    <div class="col-md-4 text-center">
+        <label>
+            <input type="radio" name="payment_method" value="cod">
+            <img src="{{ asset('storage/cod_icon.png') }}" alt="Cash on Delivery" class="img-fluid" style="max-width: 50px;">
+            <p>Cash on Delivery</p>
+        </label>
+    </div>
+</div>
+
+                <!-- Add more payment options as needed -->
+
+            </div>
+        </div>
+
+        @if (count($cartItems) > 0)
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <!-- Add more columns if needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cartItems as $item)
+                        <tr>
+                            <td>{{ $item['name'] }}</td>
+                            <td style="color: #ff1493;">Rp{{ number_format($item['price'], 0, ',', '.') }}</td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <!-- Add more columns if needed -->
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <!-- Display total price -->
+            <p style="color: #ff1493;">Total Price: Rp{{ number_format($totalPrice, 0, ',', '.') }}</p>
+
+            <!-- Add a form for additional checkout information (e.g., shipping details) -->
+            <form action="{{ route('checkout.process') }}" method="post">
+                @csrf
+                <!-- Add form fields for additional checkout information -->
+
+                <button type="submit" class="btn btn-pink">Place Order</button>
+            </form>
+
+        @else
+            <!-- Display empty cart message -->
+            <p>Your cart is empty.</p>
+            <!-- Add a link to continue shopping -->
+            <a href="{{ route('home') }}" class="btn btn-primary">Continue Shopping</a>
+        @endif
+    </div>
+@endsection
